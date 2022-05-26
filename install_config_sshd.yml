@@ -1,0 +1,18 @@
+---
+- hosts: OBBservers
+  remote_user: ansible
+  become: true
+  become_method: sudo
+  become_user: root
+
+  tasks:
+  - name: make sure sshd is installed
+    yum:
+     name: openssh-server
+     state: latest
+     update_cache: yes
+
+  - name: Restart sshd
+    service:
+      name: sshd
+      state: restarted
