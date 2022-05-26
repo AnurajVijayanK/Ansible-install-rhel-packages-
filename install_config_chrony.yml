@@ -1,0 +1,28 @@
+---
+- hosts: OBBservers
+  remote_user: ansible
+  become: true
+  become_user: ansible
+  become_method: sudo
+  become_user: root
+
+  tasks:
+  - name: make sure chronyd is installed
+    yum:
+     name: chrony
+     state: latest
+     update_cache: yes
+
+  - name: deploy chrony.conf template
+    template:
+     src: /home/ansible/chronyaspire.conf
+     dest: /etc/chrony.conf
+     owner: root
+     group: root
+     mode: 0644
+     backup: yes
+
+  - name: Restart chronyd
+    service:
+      name: chronyd
+      state: restarted
